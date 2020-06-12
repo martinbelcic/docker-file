@@ -1,0 +1,14 @@
+FROM debian:latest
+
+RUN mkdir /usr/local/Tickets
+WORKDIR  /usr/local/Tickets
+
+RUN	apt update; \
+	apt install git build-essential libpthread-stubs0-dev --assume-yes; \
+	git clone https://github.com/JPCard/TP-Hilos-Semaforos.git /usr/local/Tickets; \
+	gcc SERVIDOR_TICKETS.c -o SERVIDOR_TICKETS -pthread -ldl;
+
+EXPOSE 12345	
+CMD exec /bin/bash -c "./SERVIDOR_TICKETS; trap : TERM INT; sleep infinity & wait"
+
+
